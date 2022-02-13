@@ -1,12 +1,13 @@
-import 'dart:async';
-import 'package:floor/floor.dart';
-import 'package:flutter_database_floor_byrubylearner/database/note_table.dart';
-import 'package:flutter_database_floor_byrubylearner/database/notedao.dart';
-import 'package:sqflite/sqflite.dart' as sqflite;
-part 'note_database.g.dart';
 
-@Database(version: 1, entities: [Note])
+import 'package:floor/floor.dart';
+import 'dart:async';
+import 'package:sqflite/sqflite.dart' as sqflite;
+import 'package:flutter_database_floor_byrubylearner/database/note_dao.dart';
+import 'note_dao.dart';
+import 'note_table.dart';
+
+part 'note_database.g.dart';
+@Database(version: 1, entities: [NoteTable])
 abstract class NoteDatabase extends FloorDatabase{
   NoteDao get noteDao;
-
 }
