@@ -1,11 +1,14 @@
 import 'package:floor/floor.dart';
 
-@Entity(tableName: "NoteTable")
-class NoteTable{
-  
-  @ColumnInfo(name: 'Title')
-  @primaryKey
-  String name;
-  String phone;
-  NoteTable(this.name, this.phone);
+@Entity(tableName: 'Note')
+class Note{
+  @PrimaryKey(autoGenerate: true)
+  int? id;
+  @ColumnInfo(name: 'title')
+  String title;
+  String message;
+  Note(this.title, this.message, {this.id});
 }
+
+
+

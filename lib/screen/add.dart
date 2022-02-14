@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_database_floor_byrubylearner/database/note_dao.dart';
 import 'package:flutter_database_floor_byrubylearner/database/note_table.dart';
 import 'package:get/get.dart';
 

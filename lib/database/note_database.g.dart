@@ -82,7 +82,7 @@ class _$NoteDatabase extends NoteDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `NoteTable` (`Title` TEXT NOT NULL, `phone` TEXT NOT NULL, PRIMARY KEY (`Title`))');
+            'CREATE TABLE IF NOT EXISTS `Note` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `message` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -99,11 +99,34 @@ class _$NoteDatabase extends NoteDatabase {
 class _$NoteDao extends NoteDao {
   _$NoteDao(this.database, this.changeListener)
       : _queryAdapter = QueryAdapter(database, changeListener),
-        _noteTableInsertionAdapter = InsertionAdapter(
+        _noteInsertionAdapter = InsertionAdapter(
             database,
-            'NoteTable',
-            (NoteTable item) =>
-                <String, Object?>{'Title': item.name, 'phone': item.phone},
+            'Note',
+            (Note item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'message': item.message
+                },
+            changeListener),
+        _noteUpdateAdapter = UpdateAdapter(
+            database,
+            'Note',
+            ['id'],
+            (Note item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'message': item.message
+                },
+            changeListener),
+        _noteDeletionAdapter = DeletionAdapter(
+            database,
+            'Note',
+            ['id'],
+            (Note item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'message': item.message
+                },
             changeListener);
 
   final sqflite.DatabaseExecutor database;
@@ -112,20 +135,39 @@ class _$NoteDao extends NoteDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<NoteTable> _noteTableInsertionAdapter;
+  final InsertionAdapter<Note> _noteInsertionAdapter;
+
+  final UpdateAdapter<Note> _noteUpdateAdapter;
+
+  final DeletionAdapter<Note> _noteDeletionAdapter;
 
   @override
-  Stream<List<NoteTable>> getStream() {
-    return _queryAdapter.queryListStream('Select * from NoteTable',
-        mapper: (Map<String, Object?> row) =>
-            NoteTable(row['Title'] as String, row['phone'] as String),
-        queryableName: 'NoteTable',
+  Stream<List<Note>> getAllNotes() {
+    return _queryAdapter.queryListStream('Select * from note',
+        mapper: (Map<String, Object?> row) => Note(
+            row['title'] as String, row['message'] as String,
+            id: row['id'] as int?),
+        queryableName: 'Note',
         isView: false);
   }
 
   @override
-  Future<void> addNote(NoteTable noteTable) async {
-    await _noteTableInsertionAdapter.insert(
-        noteTable, OnConflictStrategy.abort);
+  Future<void> addNote(Note note) async {
+    await _noteInsertionAdapter.insert(note, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateNote(Note note) async {
+    await _noteUpdateAdapter.update(note, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deleteNote(Note note) async {
+    await _noteDeletionAdapter.delete(note);
+  }
+
+  @override
+  Future<void> deleteAllNote(List<Note> notes) async {
+    await _noteDeletionAdapter.deleteList(notes);
   }
 }

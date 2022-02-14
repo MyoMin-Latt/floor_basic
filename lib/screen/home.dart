@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_database_floor_byrubylearner/database/note_dao.dart';
 import 'package:flutter_database_floor_byrubylearner/database/note_table.dart';
+import 'package:flutter_database_floor_byrubylearner/database/notedao.dart';
 import 'package:flutter_database_floor_byrubylearner/screen/add.dart';
 import 'package:get/get.dart';
 
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
           FloatingActionButton(
               heroTag: 'add', // heroTag is very important for route
               onPressed: () {
-                noteDao.addNote(NoteTable("This is Name", "This is phone no"));
+                noteDao.addNote(Note("This is Name", "This is phone no"));
               },
               child: Icon(Icons.add)),
               SizedBox(width: 9,),
