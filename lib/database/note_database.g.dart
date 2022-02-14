@@ -82,7 +82,7 @@ class _$NoteDatabase extends NoteDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `NoteTable` (`id` TEXT PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `phone` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `NoteTable` (`Title` TEXT NOT NULL, `phone` TEXT NOT NULL, PRIMARY KEY (`Title`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -102,11 +102,8 @@ class _$NoteDao extends NoteDao {
         _noteTableInsertionAdapter = InsertionAdapter(
             database,
             'NoteTable',
-            (NoteTable item) => <String, Object?>{
-                  'id': item.id,
-                  'name': item.name,
-                  'phone': item.phone
-                },
+            (NoteTable item) =>
+                <String, Object?>{'Title': item.name, 'phone': item.phone},
             changeListener);
 
   final sqflite.DatabaseExecutor database;
@@ -120,8 +117,8 @@ class _$NoteDao extends NoteDao {
   @override
   Stream<List<NoteTable>> getStream() {
     return _queryAdapter.queryListStream('Select * from NoteTable',
-        mapper: (Map<String, Object?> row) => NoteTable(
-            row['id'] as String, row['name'] as String, row['phone'] as String),
+        mapper: (Map<String, Object?> row) =>
+            NoteTable(row['Title'] as String, row['phone'] as String),
         queryableName: 'NoteTable',
         isView: false);
   }

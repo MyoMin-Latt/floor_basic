@@ -1,49 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_database_floor_byrubylearner/database/note_dao.dart';
+import 'package:flutter_database_floor_byrubylearner/database/note_table.dart';
 import 'package:flutter_database_floor_byrubylearner/screen/add.dart';
 import 'package:get/get.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+// heroTag is very important for route
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
+class HomePage extends StatelessWidget {
+  NoteDao noteDao;
+  HomePage(this.noteDao, { Key? key }) : super(key: key);
 
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(onPressed: (){
-            Navigator.push(context, 
-            MaterialPageRoute(builder: (context) {
-              return AddPage();
-            },));
-          }, icon: Icon(Icons.next_plan))
-        ],
         title: Text("Floor Database"),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {
-              Navigator.push(context, 
-              MaterialPageRoute(builder: (context){
-                return AddPage();
-              }));
-            },
-            child: Icon(Icons.add),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          FloatingActionButton(onPressed: () {}, child: Icon(Icons.delete)),
+              heroTag: 'add', // heroTag is very important for route
+              onPressed: () {
+                noteDao.addNote(NoteTable("This is Name", "This is phone no"));
+              },
+              child: Icon(Icons.add)),
+              SizedBox(width: 9,),
+          FloatingActionButton(
+            heroTag: 'delete',
+            onPressed: () {},
+            child: Icon(Icons.delete),
+          )
         ],
       ),
     );
   }
 }
-
-

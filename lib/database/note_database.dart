@@ -1,8 +1,7 @@
-
-import 'package:floor/floor.dart';
 import 'dart:async';
+import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
-import 'package:flutter_database_floor_byrubylearner/database/note_dao.dart';
+
 import 'note_dao.dart';
 import 'note_table.dart';
 

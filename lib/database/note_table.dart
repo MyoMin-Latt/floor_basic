@@ -1,11 +1,11 @@
 import 'package:floor/floor.dart';
-import 'package:flutter/material.dart';
 
 @Entity(tableName: "NoteTable")
 class NoteTable{
-  @PrimaryKey(autoGenerate: true)
-  String id;
+  
+  @ColumnInfo(name: 'Title')
+  @primaryKey
   String name;
   String phone;
-  NoteTable(this.id, this.name, this.phone);
+  NoteTable(this.name, this.phone);
 }

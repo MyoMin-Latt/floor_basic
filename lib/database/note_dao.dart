@@ -1,3 +1,5 @@
+// floor, floor generate, build runner, get
+
 import 'package:floor/floor.dart';
 import 'package:flutter_database_floor_byrubylearner/database/note_table.dart';
 @dao
